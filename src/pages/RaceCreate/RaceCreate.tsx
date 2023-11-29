@@ -34,7 +34,6 @@ const useStyles = makeStyles(() =>
 );
 
 const RaceCreate: React.FC = () => {
-  getPuzzleList();
   const { userHandler, puzzleCountHandler } = usePuzzle();
   const history = useHistory();
   const classes = useStyles();
@@ -55,14 +54,6 @@ const RaceCreate: React.FC = () => {
       userHandler(values.name);
 
       const raceId = shortid();
-
-      const puzzles = await getPuzzleList();
-
-      const race: Race = {
-        puzzleList: _.sampleSize(puzzles, values.puzzleCount),
-        startedAt: null,
-        time: values.time,
-      };
 
       history.push(`/${raceId}`);
     } finally {
