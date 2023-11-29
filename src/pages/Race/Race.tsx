@@ -3,22 +3,28 @@ import React, { useEffect, useState } from "react";
 import { RouteComponentProps, useParams } from "react-router-dom";
 import RaceType from "../../types/Race";
 import RacePlay from "./components/RacePlay";
-import { puzzleList } from "../../constants";
+import { getPuzzleList } from "../../constants";
 import _ from "lodash";
 import { usePuzzle } from "../../hooks/puzzle";
 
 interface Props extends RouteComponentProps<{ raceId: string }> {}
-console.log("total puzzle count:", puzzleList.length)
 const Race: React.FC<Props> = () => {
   
   const {puzzleIndexHandler, puzzleIndex, puzzleCount} = usePuzzle();
   const params = useParams<{ raceId: string }>();
+
+  useEffect(()=>{
+    getPuzzleList().then(data=>{
+      setRace({
+        puzzleList:  _.sampleSize(data, puzzleCount),
+        startedAt: null,
+        time: new Date().getMilliseconds(),
+      })
+    })
+  }, [])
+
   const [race, setRace] = useState<null | RaceType>(
-    {
-      puzzleList: _.sampleSize(puzzleList, puzzleCount),
-      startedAt: null,
-      time: new Date().getMilliseconds(),
-    }
+   null
   );
 
   if (race === null) {

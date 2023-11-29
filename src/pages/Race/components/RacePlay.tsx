@@ -15,15 +15,21 @@ const RacePlay: React.FC<{
   onFinish: () => void;
   onTimeout: () => void;
 }> = ({ race, onSolve, onFinish, onTimeout }) => {
-  const { puzzleCount, puzzleIndex, user } = usePuzzle();
+  const {
+    puzzleCount,
+    puzzleIndex,
+    puzzleHintIndex,
+    puzzleHintIndexHandler,
+    user,
+  } = usePuzzle();
 
   const [nextButton, setNextButton] = useState<any>(false);
 
   useEffect(() => {
     setSquareStyles({});
-  }, [puzzleIndex]);
+  }, [puzzleIndex, puzzleHintIndex]);
 
-  const puzzle = race.puzzleList[puzzleIndex];
+  const puzzle = race?.puzzleList[puzzleIndex];
   const [squareStyles, setSquareStyles] = useState<any>();
 
   const [time, setTime] = useState("0:00");
@@ -32,7 +38,6 @@ const RacePlay: React.FC<{
     "sideToPlay" | "incorrect" | "correct" | "solved"
   >();
   const sideToPlay = getSideToPlayFromFen(puzzle?.startFen);
-
   useEffect(() => {
     setHelp("sideToPlay");
   }, [puzzle?.startFen]);
@@ -109,6 +114,7 @@ const RacePlay: React.FC<{
         <PuzzleBoard
           fen={puzzle?.startFen}
           solution={puzzle?.solution}
+          puzzleHintIndex={puzzleHintIndex}
           movable={true}
           onIncorrectMove={() => {
             errorSound.play();
@@ -124,6 +130,7 @@ const RacePlay: React.FC<{
           onCorrectMove={() => {
             moveSound.play();
             setHelp("correct");
+            puzzleHintIndexHandler(puzzleHintIndex + 1);
           }}
           squareStyles={squareStyles}
         />
@@ -137,7 +144,7 @@ const RacePlay: React.FC<{
 
         {help === "sideToPlay" && (
           <MyAlert variant="filled" severity="info">
-            {sideToPlay === "w" ? "White" : "Black"} to move
+            {sideToPlay !== "w" ? "White" : "Black"} to move
           </MyAlert>
         )}
 
@@ -160,7 +167,8 @@ const RacePlay: React.FC<{
         )}
 
         <Box>
-          {nextButton ? (
+          {race?.puzzleList[puzzleIndex].solution.length - 1 ==
+            puzzleHintIndex && nextButton ? (
             <Button
               className="copy-invite-link"
               fullWidth
@@ -170,6 +178,7 @@ const RacePlay: React.FC<{
               onClick={() => {
                 onSolve();
                 setNextButton(false);
+                puzzleHintIndexHandler(0);
               }}
             >
               Next
@@ -184,8 +193,12 @@ const RacePlay: React.FC<{
               onClick={() => {
                 if (puzzle && puzzle?.solution) {
                   const data = {
-                    [puzzle?.solution[0].to]: { background: "darkviolet" },
-                    [puzzle?.solution[0].from]: { background: "slateblue" },
+                    [puzzle?.solution[puzzleHintIndex]?.slice(0, 2)]: {
+                      background: "darkviolet",
+                    },
+                    [puzzle?.solution[puzzleHintIndex]?.slice(2, 4)]: {
+                      background: "slateblue",
+                    },
                   };
                   setSquareStyles(data);
                 }

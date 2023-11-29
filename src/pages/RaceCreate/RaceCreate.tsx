@@ -16,7 +16,7 @@ import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import shortid from "shortid";
-import { puzzleList } from "../../constants";
+import { getPuzzleList } from "../../constants";
 import Race from "../../types/Race";
 import _ from "lodash";
 import { usePuzzle } from "../../hooks/puzzle";
@@ -34,7 +34,8 @@ const useStyles = makeStyles(() =>
 );
 
 const RaceCreate: React.FC = () => {
-  const {userHandler, puzzleCountHandler} = usePuzzle();
+  getPuzzleList();
+  const { userHandler, puzzleCountHandler } = usePuzzle();
   const history = useHistory();
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
@@ -45,16 +46,20 @@ const RaceCreate: React.FC = () => {
 
   const handleCreateRace = async () => {
     try {
-      setLoading(true);
       const values = getValues();
+      if(values.puzzleCount > 500) return; 
+
+      setLoading(true);
 
       puzzleCountHandler(values.puzzleCount);
       userHandler(values.name);
 
       const raceId = shortid();
 
+      const puzzles = await getPuzzleList();
+
       const race: Race = {
-        puzzleList: _.sampleSize(puzzleList, values.puzzleCount),
+        puzzleList: _.sampleSize(puzzles, values.puzzleCount),
         startedAt: null,
         time: values.time,
       };
@@ -69,7 +74,7 @@ const RaceCreate: React.FC = () => {
   return (
     <Container maxWidth="xs" className={classes.container}>
       <Typography variant="h5" align="center">
-        Start a Puzzle 
+        Start a Puzzle
       </Typography>
       <Box height={8} />
       <Typography variant="body1" align="center">

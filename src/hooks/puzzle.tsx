@@ -7,6 +7,8 @@ export interface PuzzleProviderContext {
   puzzleCountHandler: (num: number) => void;
   puzzleIndex: number;
   puzzleIndexHandler: () => void;
+  puzzleHintIndex: number,
+  puzzleHintIndexHandler: (num: number) => void,
 }
 
 export const PuzzleContext = React.createContext<PuzzleProviderContext>({
@@ -15,7 +17,9 @@ export const PuzzleContext = React.createContext<PuzzleProviderContext>({
   puzzleCount: 0,
   puzzleCountHandler: (num: number) => {},
   puzzleIndex: 0,
-  puzzleIndexHandler: () => {},
+  puzzleIndexHandler: () => {}, 
+  puzzleHintIndex: 0,
+  puzzleHintIndexHandler: (num: number) => {},
 });
 
 const PuzzleProvider = (props: { children: ReactNode }) => {
@@ -23,6 +27,11 @@ const PuzzleProvider = (props: { children: ReactNode }) => {
   const [puzzleCount, setPuzzleCount] = useState<number>(0);
   const [puzzleIndex, setPuzzleIndex] = useState<number>(0);
   const [user, setUser] = useState<string>("");
+  const [puzzleHintIndex, setPuzzleHintIndex] = useState<number>(0);
+
+  const puzzleHintIndexHandler = (num: number) => {
+    setPuzzleHintIndex(num);
+  };
 
   const userHandler = (name: string) =>{
     setUser(name);
@@ -43,9 +52,12 @@ const PuzzleProvider = (props: { children: ReactNode }) => {
       puzzleIndex,
       puzzleIndexHandler,
       user,
-      userHandler
+      userHandler,
+      puzzleHintIndex,
+      puzzleHintIndexHandler
     }),
-    [puzzleCount, puzzleCountHandler, puzzleIndex, puzzleIndexHandler, user, userHandler]
+    [puzzleCount, puzzleCountHandler, puzzleIndex, puzzleIndexHandler, user, userHandler,
+      puzzleHintIndex, puzzleHintIndexHandler]
   );
 
   return (
