@@ -52,14 +52,10 @@ const RaceCreate: React.FC = () => {
       userHandler(values.name);
 
       const raceId = shortid();
-      const hostId = "Auth.currentUser?.uid!";
 
       const race: Race = {
-        hostId,
-        name: values.name,
         puzzleList: _.sampleSize(puzzleList, values.puzzleCount),
         startedAt: null,
-        createdAt: {".sv": "timestamp"},
         time: values.time,
       };
 

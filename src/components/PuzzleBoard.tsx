@@ -38,6 +38,8 @@ const PuzzleBoard: React.FC<Props> = ({
     const result = makeMove(chess, move, solution);
 
     console.log("result", result)
+    console.log("result", solution)
+    console.log("result", result?.solution)
 
     if (!result) {
       return onIncorrectMove();
@@ -52,6 +54,7 @@ const PuzzleBoard: React.FC<Props> = ({
       onCorrectMove && onCorrectMove();
     }
 
+    console.log("Here...")
     // make computer's move
 
     setTimeout(() => {

@@ -8,20 +8,15 @@ import _ from "lodash";
 import { usePuzzle } from "../../hooks/puzzle";
 
 interface Props extends RouteComponentProps<{ raceId: string }> {}
-const hostId = "hostId";
 console.log("total puzzle count:", puzzleList.length)
 const Race: React.FC<Props> = () => {
   
   const {puzzleIndexHandler, puzzleIndex, puzzleCount} = usePuzzle();
-  const userId = hostId; 
   const params = useParams<{ raceId: string }>();
   const [race, setRace] = useState<null | RaceType>(
     {
-      hostId: hostId,
-      name: "values.name",
       puzzleList: _.sampleSize(puzzleList, puzzleCount),
       startedAt: null,
-      createdAt: {".sv": "timestamp"},
       time: new Date().getMilliseconds(),
     }
   );
@@ -42,7 +37,6 @@ const Race: React.FC<Props> = () => {
   return (
     <RacePlay
       race={race}
-      userId={userId}
       onFinish={() => {
       }}
       onSolve={() => {        

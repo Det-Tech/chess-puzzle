@@ -11,12 +11,13 @@ import { usePuzzle } from "../../../hooks/puzzle";
 
 const RacePlay: React.FC<{
   race: Race;
-  userId: string;
   onSolve: () => void;
   onFinish: () => void;
   onTimeout: () => void;
-}> = ({ race, userId, onSolve, onFinish, onTimeout }) => {
+}> = ({ race, onSolve, onFinish, onTimeout }) => {
   const { puzzleCount, puzzleIndex, user } = usePuzzle();
+
+  const [nextButton, setNextButton] = useState<any>(false);
 
   useEffect(() => {
     setSquareStyles({});
@@ -87,22 +88,22 @@ const RacePlay: React.FC<{
       margin="auto"
     >
       <Box height={60} paddingTop={1} display="flex">
-          <Box
-            boxShadow="0px 0px 5px 0px #cccccc"
-            borderRadius={5}
-            padding={1}
-            marginX={1}
-            width={120}
-          >
-            <Box>
-              <Typography variant="body1">{user}</Typography>
-            </Box>
-            <Box>
-              <Typography variant="body2">
-                {puzzleIndex}/{puzzleCount} puzzle
-              </Typography>
-            </Box>
+        <Box
+          boxShadow="0px 0px 5px 0px #cccccc"
+          borderRadius={5}
+          padding={1}
+          marginX={1}
+          width={120}
+        >
+          <Box>
+            <Typography variant="body1">{user}</Typography>
           </Box>
+          <Box>
+            <Typography variant="body2">
+              {puzzleIndex}/{puzzleCount} puzzle
+            </Typography>
+          </Box>
+        </Box>
       </Box>
       <Box flex={1}>
         <PuzzleBoard
@@ -118,10 +119,7 @@ const RacePlay: React.FC<{
             // snackbar.show("Solved!");
             setHelp("solved");
             moveSound.play();
-
-            setTimeout(() => {
-                onSolve();
-            }, 500);
+            setNextButton(true);
           }}
           onCorrectMove={() => {
             moveSound.play();
@@ -162,24 +160,40 @@ const RacePlay: React.FC<{
         )}
 
         <Box>
-          <Button
-            className="copy-invite-link"
-            fullWidth
-            color="primary"
-            variant="outlined"
-            data-clipboard-text={window.location.href}
-            onClick={() => {
-              if (puzzle && puzzle?.solution) {
-                const data = {
-                  [puzzle?.solution[0].to]: { background: "darkviolet" },
-                  [puzzle?.solution[0].from]: { background: "slateblue" },
-                };
-                setSquareStyles(data);
-              }
-            }}
-          >
-            Hint
-          </Button>{" "}          
+          {nextButton ? (
+            <Button
+              className="copy-invite-link"
+              fullWidth
+              color="primary"
+              variant="outlined"
+              data-clipboard-text={window.location.href}
+              onClick={() => {
+                onSolve();
+                setNextButton(false);
+              }}
+            >
+              Next
+            </Button>
+          ) : (
+            <Button
+              className="copy-invite-link"
+              fullWidth
+              color="primary"
+              variant="outlined"
+              data-clipboard-text={window.location.href}
+              onClick={() => {
+                if (puzzle && puzzle?.solution) {
+                  const data = {
+                    [puzzle?.solution[0].to]: { background: "darkviolet" },
+                    [puzzle?.solution[0].from]: { background: "slateblue" },
+                  };
+                  setSquareStyles(data);
+                }
+              }}
+            >
+              Hint
+            </Button>
+          )}
         </Box>
       </Box>
     </Box>
