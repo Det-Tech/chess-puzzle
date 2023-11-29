@@ -1,34 +1,30 @@
 import { Box, CircularProgress } from "@material-ui/core";
-import firebase from "firebase/app";
 import React, { useEffect, useState } from "react";
 import { RouteComponentProps, useParams } from "react-router-dom";
-import { Auth, Database } from "../../config/Firebase";
 import RaceType from "../../types/Race";
-import RaceEnded from "./components/RaceEnded";
-import RaceJoin from "./components/RaceJoin";
-import RaceWaiting from "./components/RaceWaiting";
-import RaceCountDown from "./components/RaceCoutDown";
 import RacePlay from "./components/RacePlay";
+import { puzzleList } from "../../constants";
+import _ from "lodash";
+import { usePuzzle } from "../../hooks/puzzle";
 
 interface Props extends RouteComponentProps<{ raceId: string }> {}
-
+const hostId = "hostId";
+console.log("total puzzle count:", puzzleList.length)
 const Race: React.FC<Props> = () => {
-  const userId = Auth.currentUser?.uid!;
+  
+  const {puzzleIndexHandler, puzzleIndex, puzzleCount} = usePuzzle();
+  const userId = hostId; 
   const params = useParams<{ raceId: string }>();
-  const [race, setRace] = useState<null | RaceType>(null);
-  const [raceRef] = useState(Database.ref("race").child(params.raceId));
-
-  useEffect(() => {
-    raceRef.on("value", (snapshot) => {
-      console.log("snapshot:  ",snapshot.val())
-      setRace(snapshot.val());
-    });
-
-    return () => {
-      raceRef.off();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const [race, setRace] = useState<null | RaceType>(
+    {
+      hostId: hostId,
+      name: "values.name",
+      puzzleList: _.sampleSize(puzzleList, puzzleCount),
+      startedAt: null,
+      createdAt: {".sv": "timestamp"},
+      time: new Date().getMilliseconds(),
+    }
+  );
 
   if (race === null) {
     return (
@@ -43,69 +39,18 @@ const Race: React.FC<Props> = () => {
     );
   }
 
-  if (
-    Object.values(race.racers).every((racer) => racer.finishedAt) ||
-    race.state === "finished"
-  ) {
-    return <RaceEnded race={race} />;
-  }
-
-  if (!Object.keys(race.racers).includes(userId)) {
-    return (
-      <RaceJoin
-        onJoin={async (name) => {
-          await raceRef
-            .child("racers")
-            .child(userId)
-            .set({ name, currentPuzzleIndex: 0 });
-        }}
-      />
-    );
-  }
-
-  if (race.state === "waiting") {
-    return (
-      <RaceWaiting
-        userId={userId}
-        race={race}
-        onStart={() => raceRef.child("state").set("starting")}
-      />
-    );
-  }
-
-  if (race.state === "starting") {
-    return (
-      <RaceCountDown
-        onFinish={() => {
-          raceRef.update({
-            state: "started",
-            startedAt: firebase.database.ServerValue.TIMESTAMP,
-          });
-        }}
-      />
-    );
-  }
-
   return (
     <RacePlay
       race={race}
       userId={userId}
       onFinish={() => {
-        raceRef
-          .child("racers")
-          .child(userId)
-          .child("finishedAt")
-          .set(firebase.database.ServerValue.TIMESTAMP);
       }}
-      onSolve={() => {
-        raceRef
-          .child("racers")
-          .child(userId)
-          .child("currentPuzzleIndex")
-          .set(firebase.database.ServerValue.increment(1));
+      onSolve={() => {        
+        if(puzzleIndex <= puzzleCount - 1){
+          puzzleIndexHandler();
+        }
       }}
       onTimeout={() => {
-        raceRef.child("state").set("finished");
       }}
     />
   );

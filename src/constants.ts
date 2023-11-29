@@ -17,6 +17,12 @@ export const puzzleList: Puzzle[] = [
     id: "",
     name: "",
     startFen: "5r1k/p2q2bp/1p6/2p5/8/1P1Pr1P1/P3P2P/B4RK1 w - - 0 1",
+    solution: [{ from: "f1", to: "f8" }, { from: "f1", to: "f8" }, { from: "f1", to: "f8" }],
+  },
+  {
+    id: "",
+    name: "",
+    startFen: "5r1k/p2q2bp/1p6/2p5/8/1P1Pr1P1/P3P2P/B4RK1 w - - 0 1",
     solution: [{ from: "f1", to: "f8" }],
   },
   {

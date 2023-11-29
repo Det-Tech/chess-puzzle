@@ -11,16 +11,15 @@ import {
   makeStyles,
   createStyles,
 } from "@material-ui/core";
-import firebase from "firebase/app";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import shortid from "shortid";
-import { Auth, Database } from "../../config/Firebase";
 import { puzzleList } from "../../constants";
 import Race from "../../types/Race";
 import _ from "lodash";
+import { usePuzzle } from "../../hooks/puzzle";
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -35,6 +34,7 @@ const useStyles = makeStyles(() =>
 );
 
 const RaceCreate: React.FC = () => {
+  const {userHandler, puzzleCountHandler} = usePuzzle();
   const history = useHistory();
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
@@ -48,26 +48,23 @@ const RaceCreate: React.FC = () => {
       setLoading(true);
       const values = getValues();
 
+      puzzleCountHandler(values.puzzleCount);
+      userHandler(values.name);
+
       const raceId = shortid();
-      const hostId = Auth.currentUser?.uid!;
+      const hostId = "Auth.currentUser?.uid!";
 
       const race: Race = {
         hostId,
         name: values.name,
         puzzleList: _.sampleSize(puzzleList, values.puzzleCount),
-        state: "waiting",
         startedAt: null,
-        createdAt: firebase.database.ServerValue.TIMESTAMP,
+        createdAt: {".sv": "timestamp"},
         time: values.time,
-        racers: {
-          [hostId]: {
-            name: values.name,
-            currentPuzzleIndex: 0,
-          },
-        },
       };
 
-      await Database.ref("race").child(raceId).set(race);
+      console.log("race", race)
+
       history.push(`/${raceId}`);
     } finally {
       setLoading(false);
@@ -78,11 +75,11 @@ const RaceCreate: React.FC = () => {
   return (
     <Container maxWidth="xs" className={classes.container}>
       <Typography variant="h5" align="center">
-        Start a Race
+        Start a Puzzle 
       </Typography>
       <Box height={8} />
       <Typography variant="body1" align="center">
-        Race your puzzle skills
+        Improve your puzzle skills
       </Typography>
       <Box height={16} />
       <Controller
@@ -98,26 +95,14 @@ const RaceCreate: React.FC = () => {
         fullWidth
         onClick={() => setDetailsDialogOpen(true)}
       >
-        Start Race
+        Start puzzle
       </Button>
       <Dialog
         open={detailsDialogOpen}
         onClose={() => setDetailsDialogOpen(false)}
       >
-        <DialogTitle>Race Info</DialogTitle>
+        <DialogTitle>Info</DialogTitle>
         <DialogContent>
-          <Controller
-            name="time"
-            control={control}
-            as={
-              <TextField
-                autoFocus
-                margin="dense"
-                label="Time in seconds"
-                fullWidth
-              />
-            }
-          />
           <Controller
             name="puzzleCount"
             control={control}

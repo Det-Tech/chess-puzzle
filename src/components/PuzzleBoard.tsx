@@ -11,6 +11,7 @@ interface Props {
   onIncorrectMove: () => void;
   onSolve: () => void;
   movable: boolean;
+  squareStyles: any
 }
 
 const PuzzleBoard: React.FC<Props> = ({
@@ -20,6 +21,7 @@ const PuzzleBoard: React.FC<Props> = ({
   fen: initialFen,
   solution: initialSolution,
   movable,
+  squareStyles,
 }) => {
   const [chess, setChess] = useState(new Chess(initialFen));
   const [orientation, setOrientation] = useState(chess.turn());
@@ -69,6 +71,7 @@ const PuzzleBoard: React.FC<Props> = ({
       }
     }, 500);
   };
+  
 
   return (
     <ReactResizeDetector handleHeight handleWidth>
@@ -89,11 +92,11 @@ const PuzzleBoard: React.FC<Props> = ({
               orientation={orientation}
               position={chess.fen()}
               width={size}
-              draggable={movable && solution.length > 0}
+              draggable={movable && solution && solution.length > 0}
               onDrop={({ sourceSquare, targetSquare }) =>
                 handleMove({ from: sourceSquare, to: targetSquare })
               }
-              // squareStyles={{c3:{background:"red"}}}
+              squareStyles={squareStyles}
               transitionDuration={100}
             />
           </div>

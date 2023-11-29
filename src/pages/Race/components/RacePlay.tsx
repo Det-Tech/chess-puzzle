@@ -1,17 +1,13 @@
-import { Box, Container, Typography } from "@material-ui/core";
+import { Box, Button, Container, Typography } from "@material-ui/core";
 import { Alert, AlertProps } from "@material-ui/lab";
 import _ from "lodash";
 import React, { useState, useCallback, useEffect } from "react";
 import PuzzleBoard from "../../../components/PuzzleBoard";
-import { getFirebaseServerTimestamp } from "../../../config/Firebase";
 import { errorSound, moveSound } from "../../../constants";
 import Race from "../../../types/Race";
-import {
-  formatTime,
-  getSideToPlayFromFen,
-  sortRacers,
-} from "../../../utils/utils";
+import { formatTime, getSideToPlayFromFen } from "../../../utils/utils";
 import RaceStanding from "./RaceStanding";
+import { usePuzzle } from "../../../hooks/puzzle";
 
 const RacePlay: React.FC<{
   race: Race;
@@ -20,35 +16,31 @@ const RacePlay: React.FC<{
   onFinish: () => void;
   onTimeout: () => void;
 }> = ({ race, userId, onSolve, onFinish, onTimeout }) => {
-  const racer = race.racers[userId];
-  const puzzle = race.puzzleList[racer.currentPuzzleIndex];
+  const { puzzleCount, puzzleIndex, user } = usePuzzle();
+
+  useEffect(() => {
+    setSquareStyles({});
+  }, [puzzleIndex]);
+
+  const puzzle = race.puzzleList[puzzleIndex];
+  const [squareStyles, setSquareStyles] = useState<any>();
+
   const [time, setTime] = useState("0:00");
 
   const [help, setHelp] = useState<
     "sideToPlay" | "incorrect" | "correct" | "solved"
   >();
-  const sideToPlay = getSideToPlayFromFen(puzzle.startFen);
+  const sideToPlay = getSideToPlayFromFen(puzzle?.startFen);
 
   useEffect(() => {
     setHelp("sideToPlay");
-  }, [puzzle.startFen]);
+  }, [puzzle?.startFen]);
 
   const tickTimer = useCallback(async () => {
     if (!race) {
       return;
     }
 
-    const serverTime = await getFirebaseServerTimestamp();
-
-    const timePassed = serverTime - race.startedAt;
-    const timeLeft = race.time * 1000 - timePassed;
-
-    if (timeLeft > 0) {
-      setTime(formatTime(timeLeft));
-      setTimeout(tickTimer, 1000);
-    } else {
-      onTimeout();
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -61,7 +53,7 @@ const RacePlay: React.FC<{
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (racer.finishedAt) {
+  if (puzzleIndex > puzzleCount - 1) {
     return (
       <Box
         display="flex"
@@ -76,7 +68,7 @@ const RacePlay: React.FC<{
           </Typography>
 
           <Typography variant="body1" align="center">
-            You finished the race, wait for others to finish.
+            You finished the puzzle, Please again.
           </Typography>
 
           <RaceStanding race={race} />
@@ -95,9 +87,7 @@ const RacePlay: React.FC<{
       margin="auto"
     >
       <Box height={60} paddingTop={1} display="flex">
-        {sortRacers(_.values(race.racers)).map((r) => (
           <Box
-            key={r.name}
             boxShadow="0px 0px 5px 0px #cccccc"
             borderRadius={5}
             padding={1}
@@ -105,26 +95,19 @@ const RacePlay: React.FC<{
             width={120}
           >
             <Box>
-              <Typography variant="body1">{r.name}</Typography>
+              <Typography variant="body1">{user}</Typography>
             </Box>
             <Box>
-              {r.finishedAt ? (
-                <Typography variant="body2">
-                  Finished in {formatTime(r.finishedAt - race.startedAt)}
-                </Typography>
-              ) : (
-                <Typography variant="body2">
-                  {r.currentPuzzleIndex}/{race.puzzleList.length} puzzle
-                </Typography>
-              )}
+              <Typography variant="body2">
+                {puzzleIndex}/{puzzleCount} puzzle
+              </Typography>
             </Box>
           </Box>
-        ))}
       </Box>
       <Box flex={1}>
         <PuzzleBoard
-          fen={puzzle.startFen}
-          solution={puzzle.solution}
+          fen={puzzle?.startFen}
+          solution={puzzle?.solution}
           movable={true}
           onIncorrectMove={() => {
             errorSound.play();
@@ -137,24 +120,21 @@ const RacePlay: React.FC<{
             moveSound.play();
 
             setTimeout(() => {
-              if (race.puzzleList.length - 1 === racer.currentPuzzleIndex) {
-                onFinish();
-              } else {
                 onSolve();
-              }
             }, 500);
           }}
           onCorrectMove={() => {
             moveSound.play();
             setHelp("correct");
           }}
+          squareStyles={squareStyles}
         />
       </Box>
 
       <Box padding={2} display="flex" justifyContent="space-between">
         <Box>
           <Typography variant="h5">Puzzles</Typography>
-          {racer.currentPuzzleIndex}/{race.puzzleList.length}
+          {puzzleIndex}/{puzzleCount}
         </Box>
 
         {help === "sideToPlay" && (
@@ -182,8 +162,24 @@ const RacePlay: React.FC<{
         )}
 
         <Box>
-          <Typography variant="h5">Time left</Typography>
-          <Typography align="right">{time}</Typography>
+          <Button
+            className="copy-invite-link"
+            fullWidth
+            color="primary"
+            variant="outlined"
+            data-clipboard-text={window.location.href}
+            onClick={() => {
+              if (puzzle && puzzle?.solution) {
+                const data = {
+                  [puzzle?.solution[0].to]: { background: "darkviolet" },
+                  [puzzle?.solution[0].from]: { background: "slateblue" },
+                };
+                setSquareStyles(data);
+              }
+            }}
+          >
+            Hint
+          </Button>{" "}          
         </Box>
       </Box>
     </Box>

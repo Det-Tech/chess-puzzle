@@ -5,11 +5,7 @@ export default interface Race {
   hostId: string;
   name: string;
   puzzleList: Puzzle[];
-  state: "waiting" | "starting" | "started" | "finished" | "aborted";
   startedAt: any;
   createdAt: any;
   time: number;
-  racers: {
-    [id: string]: Omit<Racer, "id">;
-  };
 }

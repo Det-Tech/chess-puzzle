@@ -25,12 +25,8 @@ const RaceWaiting: React.FC<{
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const joinStatus =
-    _.size(race.racers) === 1
-      ? "Waiting for players to join"
-      : `${_.entries(race.racers)
-          .map(([id, r]) => (id === userId ? "You" : r.name))
-          .join(", ")} joined`;
+  const joinStatus ="Waiting for players to join"
+      
 
   if (race.hostId === userId) {
     return (
