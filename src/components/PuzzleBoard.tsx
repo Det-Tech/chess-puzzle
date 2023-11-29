@@ -37,10 +37,6 @@ const PuzzleBoard: React.FC<Props> = ({
   const handleMove = async (move: ShortMove) => {
     const result = makeMove(chess, move, solution);
 
-    console.log("result", result)
-    console.log("result", solution)
-    console.log("result", result?.solution)
-
     if (!result) {
       return onIncorrectMove();
     }

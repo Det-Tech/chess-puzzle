@@ -59,8 +59,6 @@ const RaceCreate: React.FC = () => {
         time: values.time,
       };
 
-      console.log("race", race)
-
       history.push(`/${raceId}`);
     } finally {
       setLoading(false);
