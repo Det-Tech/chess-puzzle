@@ -1,1 +1,1 @@
-# Chess Puzzle Race
+# Chess Puzzle
