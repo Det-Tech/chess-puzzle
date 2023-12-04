@@ -95,7 +95,7 @@ const PuzzleBoard: React.FC<Props> = ({
   return (
     <ReactResizeDetector handleHeight handleWidth>
       {({ width, height }: { width: number; height: number }) => {
-        const size = Math.min(width, height, 500) || 400;
+        const size = Math.min(width, height, 650) || 400;
         return (
           <div
             style={{
