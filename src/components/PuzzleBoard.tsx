@@ -117,13 +117,13 @@ const PuzzleBoard: React.FC<Props> = ({
               squareStyles={squareStyles}
               transitionDuration={100}
               lightSquareStyle={{ backgroundColor: "#eeeed2", fontSize:"24px" }}
-              darkSquareStyle={{ backgroundColor: "#769656", fontSize:"24px" }}
+              darkSquareStyle={{ backgroundColor: "#ff6054", fontSize:"24px" }}
               pieces={{
                 wR: ({ squareWidth, isDragging }) => (
                   <img
                     style={{
-                      width: isDragging ? squareWidth * 1.75 : squareWidth,
-                      height: isDragging ? squareWidth * 1.75 : squareWidth
+                      width: isDragging ? squareWidth: squareWidth,
+                      height: isDragging ? squareWidth : squareWidth
                     }}
                     src={wr}
                     alt={"wR"}
@@ -132,8 +132,8 @@ const PuzzleBoard: React.FC<Props> = ({
                 wQ: ({ squareWidth, isDragging }) => (
                   <img
                     style={{
-                      width: isDragging ? squareWidth * 1.75 : squareWidth,
-                      height: isDragging ? squareWidth * 1.75 : squareWidth
+                      width: isDragging ? squareWidth: squareWidth,
+                      height: isDragging ? squareWidth: squareWidth
                     }}
                     src={wq}
                     alt={"elvis"}
@@ -142,8 +142,8 @@ const PuzzleBoard: React.FC<Props> = ({
                 wB: ({ squareWidth, isDragging }) => (
                   <img
                     style={{
-                      width: isDragging ? squareWidth * 1.75 : squareWidth,
-                      height: isDragging ? squareWidth * 1.75 : squareWidth
+                      width: isDragging ? squareWidth: squareWidth,
+                      height: isDragging ? squareWidth: squareWidth
                     }}
                     src={wb}
                     alt={"elvis"}
@@ -152,8 +152,8 @@ const PuzzleBoard: React.FC<Props> = ({
                 wN: ({ squareWidth, isDragging }) => (
                   <img
                     style={{
-                      width: isDragging ? squareWidth * 1.75 : squareWidth,
-                      height: isDragging ? squareWidth * 1.75 : squareWidth
+                      width: isDragging ? squareWidth: squareWidth,
+                      height: isDragging ? squareWidth: squareWidth
                     }}
                     src={wn}
                     alt={"elvis"}
@@ -162,8 +162,8 @@ const PuzzleBoard: React.FC<Props> = ({
                 wP: ({ squareWidth, isDragging }) => (
                   <img
                     style={{
-                      width: isDragging ? squareWidth * 1.75 : squareWidth,
-                      height: isDragging ? squareWidth * 1.75 : squareWidth
+                      width: isDragging ? squareWidth: squareWidth,
+                      height: isDragging ? squareWidth: squareWidth
                     }}
                     src={wp}
                     alt={"elvis"}
@@ -172,8 +172,8 @@ const PuzzleBoard: React.FC<Props> = ({
                 wK: ({ squareWidth, isDragging }) => (
                   <img
                     style={{
-                      width: isDragging ? squareWidth * 1.75 : squareWidth,
-                      height: isDragging ? squareWidth * 1.75 : squareWidth
+                      width: isDragging ? squareWidth: squareWidth,
+                      height: isDragging ? squareWidth: squareWidth
                     }}
                     src={wk}
                     alt={"wK"}
@@ -183,8 +183,8 @@ const PuzzleBoard: React.FC<Props> = ({
                 bR: ({ squareWidth, isDragging }) => (
                   <img
                     style={{
-                      width: isDragging ? squareWidth * 1.75 : squareWidth,
-                      height: isDragging ? squareWidth * 1.75 : squareWidth
+                      width: isDragging ? squareWidth: squareWidth,
+                      height: isDragging ? squareWidth: squareWidth
                     }}
                     src={br}
                     alt={"wR"}
@@ -193,8 +193,8 @@ const PuzzleBoard: React.FC<Props> = ({
                 bQ: ({ squareWidth, isDragging }) => (
                   <img
                     style={{
-                      width: isDragging ? squareWidth * 1.75 : squareWidth,
-                      height: isDragging ? squareWidth * 1.75 : squareWidth
+                      width: isDragging ? squareWidth: squareWidth,
+                      height: isDragging ? squareWidth: squareWidth
                     }}
                     src={bq}
                     alt={"elvis"}
@@ -203,8 +203,8 @@ const PuzzleBoard: React.FC<Props> = ({
                 bB: ({ squareWidth, isDragging }) => (
                   <img
                     style={{
-                      width: isDragging ? squareWidth * 1.75 : squareWidth,
-                      height: isDragging ? squareWidth * 1.75 : squareWidth
+                      width: isDragging ? squareWidth: squareWidth,
+                      height: isDragging ? squareWidth: squareWidth
                     }}
                     src={bb}
                     alt={"elvis"}
@@ -213,8 +213,8 @@ const PuzzleBoard: React.FC<Props> = ({
                 bN: ({ squareWidth, isDragging }) => (
                   <img
                     style={{
-                      width: isDragging ? squareWidth * 1.75 : squareWidth,
-                      height: isDragging ? squareWidth * 1.75 : squareWidth
+                      width: isDragging ? squareWidth: squareWidth,
+                      height: isDragging ? squareWidth: squareWidth
                     }}
                     src={bn}
                     alt={"elvis"}
@@ -223,8 +223,8 @@ const PuzzleBoard: React.FC<Props> = ({
                 bP: ({ squareWidth, isDragging }) => (
                   <img
                     style={{
-                      width: isDragging ? squareWidth * 1.75 : squareWidth,
-                      height: isDragging ? squareWidth * 1.75 : squareWidth
+                      width: isDragging ? squareWidth: squareWidth,
+                      height: isDragging ? squareWidth: squareWidth
                     }}
                     src={bp}
                     alt={"elvis"}
@@ -233,8 +233,8 @@ const PuzzleBoard: React.FC<Props> = ({
                 bK: ({ squareWidth, isDragging }) => (
                   <img
                     style={{
-                      width: isDragging ? squareWidth * 1.75 : squareWidth,
-                      height: isDragging ? squareWidth * 1.75 : squareWidth
+                      width: isDragging ? squareWidth: squareWidth,
+                      height: isDragging ? squareWidth: squareWidth
                     }}
                     src={bk}
                     alt={"wK"}
