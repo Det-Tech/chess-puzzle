@@ -3,6 +3,20 @@ import { ChessInstance, ShortMove } from "chess.js";
 import ReactResizeDetector from "react-resize-detector";
 import Chessboard from "chessboardjsx";
 import { usePuzzle } from "../hooks/puzzle";
+import bb from "../assets/bb.png";
+import bk from "../assets/bk.png";
+import bn from "../assets/bn.png";
+import bq from "../assets/bq.png";
+import br from "../assets/br.png";
+import bp from "../assets/bp.png";
+
+import wb from "../assets/wb.png";
+import wk from "../assets/wk.png";
+import wn from "../assets/wn.png";
+import wq from "../assets/wq.png";
+import wp from "../assets/wp.png";
+import wr from "../assets/wr.png";
+
 const Chess = require("chess.js");
 
 interface Props {
@@ -94,7 +108,6 @@ const PuzzleBoard: React.FC<Props> = ({
           >
             <Chessboard
               boardStyle={{ margin: "auto" }}
-              orientation={orientation}
               position={chess.fen()}
               width={size}
               draggable={movable && solution && solution.length > 0}
@@ -103,6 +116,131 @@ const PuzzleBoard: React.FC<Props> = ({
               }
               squareStyles={squareStyles}
               transitionDuration={100}
+              lightSquareStyle={{ backgroundColor: "#eeeed2", fontSize:"24px" }}
+              darkSquareStyle={{ backgroundColor: "#769656", fontSize:"24px" }}
+              pieces={{
+                wR: ({ squareWidth, isDragging }) => (
+                  <img
+                    style={{
+                      width: isDragging ? squareWidth * 1.75 : squareWidth,
+                      height: isDragging ? squareWidth * 1.75 : squareWidth
+                    }}
+                    src={wr}
+                    alt={"wR"}
+                  />
+                ),
+                wQ: ({ squareWidth, isDragging }) => (
+                  <img
+                    style={{
+                      width: isDragging ? squareWidth * 1.75 : squareWidth,
+                      height: isDragging ? squareWidth * 1.75 : squareWidth
+                    }}
+                    src={wq}
+                    alt={"elvis"}
+                  />
+                ),
+                wB: ({ squareWidth, isDragging }) => (
+                  <img
+                    style={{
+                      width: isDragging ? squareWidth * 1.75 : squareWidth,
+                      height: isDragging ? squareWidth * 1.75 : squareWidth
+                    }}
+                    src={wb}
+                    alt={"elvis"}
+                  />
+                ),
+                wN: ({ squareWidth, isDragging }) => (
+                  <img
+                    style={{
+                      width: isDragging ? squareWidth * 1.75 : squareWidth,
+                      height: isDragging ? squareWidth * 1.75 : squareWidth
+                    }}
+                    src={wn}
+                    alt={"elvis"}
+                  />
+                ),
+                wP: ({ squareWidth, isDragging }) => (
+                  <img
+                    style={{
+                      width: isDragging ? squareWidth * 1.75 : squareWidth,
+                      height: isDragging ? squareWidth * 1.75 : squareWidth
+                    }}
+                    src={wp}
+                    alt={"elvis"}
+                  />
+                ),
+                wK: ({ squareWidth, isDragging }) => (
+                  <img
+                    style={{
+                      width: isDragging ? squareWidth * 1.75 : squareWidth,
+                      height: isDragging ? squareWidth * 1.75 : squareWidth
+                    }}
+                    src={wk}
+                    alt={"wK"}
+                  />
+                ),
+
+                bR: ({ squareWidth, isDragging }) => (
+                  <img
+                    style={{
+                      width: isDragging ? squareWidth * 1.75 : squareWidth,
+                      height: isDragging ? squareWidth * 1.75 : squareWidth
+                    }}
+                    src={br}
+                    alt={"wR"}
+                  />
+                ),
+                bQ: ({ squareWidth, isDragging }) => (
+                  <img
+                    style={{
+                      width: isDragging ? squareWidth * 1.75 : squareWidth,
+                      height: isDragging ? squareWidth * 1.75 : squareWidth
+                    }}
+                    src={bq}
+                    alt={"elvis"}
+                  />
+                ),
+                bB: ({ squareWidth, isDragging }) => (
+                  <img
+                    style={{
+                      width: isDragging ? squareWidth * 1.75 : squareWidth,
+                      height: isDragging ? squareWidth * 1.75 : squareWidth
+                    }}
+                    src={bb}
+                    alt={"elvis"}
+                  />
+                ),
+                bN: ({ squareWidth, isDragging }) => (
+                  <img
+                    style={{
+                      width: isDragging ? squareWidth * 1.75 : squareWidth,
+                      height: isDragging ? squareWidth * 1.75 : squareWidth
+                    }}
+                    src={bn}
+                    alt={"elvis"}
+                  />
+                ),
+                bP: ({ squareWidth, isDragging }) => (
+                  <img
+                    style={{
+                      width: isDragging ? squareWidth * 1.75 : squareWidth,
+                      height: isDragging ? squareWidth * 1.75 : squareWidth
+                    }}
+                    src={bp}
+                    alt={"elvis"}
+                  />
+                ),
+                bK: ({ squareWidth, isDragging }) => (
+                  <img
+                    style={{
+                      width: isDragging ? squareWidth * 1.75 : squareWidth,
+                      height: isDragging ? squareWidth * 1.75 : squareWidth
+                    }}
+                    src={bk}
+                    alt={"wK"}
+                  />
+                ),
+              }}
             />
           </div>
         );

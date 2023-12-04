@@ -144,7 +144,7 @@ const RacePlay: React.FC<{
 
         {help === "sideToPlay" && (
           <MyAlert variant="filled" severity="info">
-            {sideToPlay !== "w" ? "White" : "Black"} to move
+            {sideToPlay == "w" ? "Black" : "White"} to move
           </MyAlert>
         )}
 
