@@ -1,5 +1,6 @@
 import { Box, Button, Container, Typography } from "@material-ui/core";
-import { Alert, AlertProps } from "@material-ui/lab";
+import { AlertProps } from "@material-ui/lab";
+import Alert from "@material-ui/lab/Alert";
 import _ from "lodash";
 import React, { useState, useCallback, useEffect } from "react";
 import PuzzleBoard from "../../../components/PuzzleBoard";
