@@ -22,9 +22,11 @@ const RacePlay: React.FC<{
     puzzleHintIndex,
     puzzleHintIndexHandler,
     user,
+    puzzleTimer
   } = usePuzzle();
 
   const [nextButton, setNextButton] = useState<any>(false);
+  const [systemTime, setSystemTime] = useState(0);
 
   useEffect(() => {
     setSquareStyles({});
@@ -38,6 +40,24 @@ const RacePlay: React.FC<{
   const [help, setHelp] = useState<
     "sideToPlay" | "incorrect" | "correct" | "solved"
   >();
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSystemTime((old) => old + 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    let diffTime = 0;
+    // @ts-ignore
+    diffTime = Number(puzzleTimer) - systemTime;
+    const minute = Math.floor(diffTime / (60));
+    const second = Math.floor((diffTime % (60)));
+    setTime(`${minute}:${second}`)
+  }, [systemTime]);
+
   const sideToPlay = getSideToPlayFromFen(puzzle?.startFen);
   useEffect(() => {
     setHelp("sideToPlay");
@@ -60,7 +80,7 @@ const RacePlay: React.FC<{
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (puzzleIndex > puzzleCount - 1) {
+  if ((Number(puzzleTimer) - systemTime) < 0 || puzzleIndex > puzzleCount - 1) {
     return (
       <Box
         display="flex"
@@ -93,7 +113,7 @@ const RacePlay: React.FC<{
       maxWidth={768}
       margin="auto"
     >
-      <Box height={60} paddingTop={1} display="flex">
+      <Box height={80} paddingTop={1} display="flex">
         <Box
           boxShadow="0px 0px 5px 0px #cccccc"
           borderRadius={5}
@@ -107,6 +127,9 @@ const RacePlay: React.FC<{
           <Box>
             <Typography variant="body2">
               {puzzleIndex}/{puzzleCount} puzzle
+            </Typography>
+            <Typography variant="body2">
+              Time: {time}
             </Typography>
           </Box>
         </Box>

@@ -5,6 +5,8 @@ import Race from "./pages/Race/Race";
 import RaceCreate from "./pages/RaceCreate/RaceCreate";
 import Alert from "@material-ui/lab/Alert";
 import { PuzzleProvider } from "./hooks/puzzle";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type SnackbarContextType = {
   show: (text: string) => void;
@@ -49,6 +51,7 @@ function App() {
           </Alert>
         </Snackbar>
       </SnackbarContext.Provider>
+      <ToastContainer />
     </PuzzleProvider>
   );
 }
