@@ -16,6 +16,7 @@ const RacePlay: React.FC<{
   onFinish: () => void;
   onTimeout: () => void;
 }> = ({ race, onSolve, onFinish, onTimeout }) => {
+  console.log("race", race)
   const {
     puzzleCount,
     puzzleIndex,

@@ -10,22 +10,24 @@ import { usePuzzle } from "../../hooks/puzzle";
 interface Props extends RouteComponentProps<{ raceId: string }> {}
 const Race: React.FC<Props> = () => {
   
-  const {puzzleIndexHandler, puzzleIndex, puzzleCount} = usePuzzle();
+  const {puzzleIndexHandler, puzzleIndex, puzzleCount, selectedLevel} = usePuzzle();
   const params = useParams<{ raceId: string }>();
+  
+  const [race, setRace] = useState<null | RaceType>(
+    null
+   );
 
   useEffect(()=>{
-    getPuzzleList().then(data=>{
+    getPuzzleList(selectedLevel).then(data=>{
       setRace({
         puzzleList:  _.sampleSize(data, puzzleCount),
         startedAt: null,
         time: new Date().getMilliseconds(),
       })
+      console.log(race)
     })
   }, [])
 
-  const [race, setRace] = useState<null | RaceType>(
-   null
-  );
 
   if (race === null) {
     return (

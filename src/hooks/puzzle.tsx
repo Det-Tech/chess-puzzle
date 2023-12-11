@@ -11,6 +11,8 @@ export interface PuzzleProviderContext {
   puzzleHintIndexHandler: (num: number) => void,
   puzzleTimer: "",
   puzzleTimerHandler: (num: any) => void,
+  selectedLevel: string,
+  selectedLevelHandler: (data: any) => void,
 }
 
 export const PuzzleContext = React.createContext<PuzzleProviderContext>({
@@ -24,6 +26,8 @@ export const PuzzleContext = React.createContext<PuzzleProviderContext>({
   puzzleHintIndexHandler: (num: number) => {},
   puzzleTimer: "",
   puzzleTimerHandler: (num: any) => {},
+  selectedLevel: "beginner",
+  selectedLevelHandler: (data: any) => {},
 });
 
 const PuzzleProvider = (props: { children: ReactNode }) => {
@@ -33,6 +37,11 @@ const PuzzleProvider = (props: { children: ReactNode }) => {
   const [user, setUser] = useState<string>("");
   const [puzzleHintIndex, setPuzzleHintIndex] = useState<number>(0);
   const [puzzleTimer, setPuzzleTimer] = useState<any>("");
+  const [selectedLevel, setSelectedLevel] = useState<string>("beginner");
+
+  const selectedLevelHandler = (data: string) => {
+    setSelectedLevel(data);
+  }
   
   const puzzleTimerHandler = (num: any) => {
     setPuzzleTimer(num);
@@ -65,10 +74,12 @@ const PuzzleProvider = (props: { children: ReactNode }) => {
       puzzleHintIndex,
       puzzleHintIndexHandler,
       puzzleTimer,
-      puzzleTimerHandler
+      puzzleTimerHandler,
+      selectedLevel,
+      selectedLevelHandler
     }),
     [puzzleCount, puzzleCountHandler, puzzleIndex, puzzleIndexHandler, user, userHandler,
-      puzzleHintIndex, puzzleHintIndexHandler, puzzleTimer, puzzleTimerHandler]
+      puzzleHintIndex, puzzleHintIndexHandler, puzzleTimer, puzzleTimerHandler, selectedLevel,, selectedLevelHandler]
   );
 
   return (

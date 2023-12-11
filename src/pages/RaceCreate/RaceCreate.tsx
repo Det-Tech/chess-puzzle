@@ -14,7 +14,6 @@ import {
     MenuItem,
     FormControl,
     InputLabel,
-    Snackbar,
 } from "@material-ui/core";
 
 import { toast } from "react-toastify";
@@ -23,8 +22,6 @@ import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import shortid from "shortid";
-import { getPuzzleList } from "../../constants";
-import Race from "../../types/Race";
 import _ from "lodash";
 import { usePuzzle } from "../../hooks/puzzle";
 
@@ -41,7 +38,7 @@ const useStyles = makeStyles(() =>
 );
 
 const RaceCreate: React.FC = () => {
-    const { userHandler, puzzleCountHandler, puzzleTimer, puzzleTimerHandler } =
+    const { userHandler, puzzleCountHandler, puzzleTimer, puzzleTimerHandler, selectedLevel, selectedLevelHandler } =
         usePuzzle();
     const history = useHistory();
     const classes = useStyles();
@@ -150,6 +147,26 @@ const RaceCreate: React.FC = () => {
                         >
                             <MenuItem value={"300"}>5min</MenuItem>
                             <MenuItem value={"600"}>10min</MenuItem>
+                        </Select>
+                    </FormControl>
+
+                    <FormControl fullWidth>
+                        <InputLabel id="time-select">Level</InputLabel>
+
+                        <Select
+                            label="level of select"
+                            labelId="level-select-label"
+                            id="level-select"
+                            value={selectedLevel}
+                            onChange={(e) => {
+                                selectedLevelHandler(e.target.value);
+                            }}
+                            fullWidth
+                        >
+                            <MenuItem value={"beginner"}>Beginner</MenuItem>
+                            <MenuItem value={"intermedia"}>Intermedia</MenuItem>
+                            <MenuItem value={"advanced"}>Advanced</MenuItem>
+                            <MenuItem value={"future"}>Future</MenuItem>
                         </Select>
                     </FormControl>
                 </DialogContent>
